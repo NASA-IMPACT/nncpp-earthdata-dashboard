@@ -46,12 +46,17 @@ export class CdkStack extends cdk.Stack {
     });
 
     // Alias for cloudfront distribution
-    new route53.ARecord(this, 'AliasRecordForCloudFront',{
-      zone: myZone,
-      recordName: subDomain,
-      target: route53.RecordTarget.fromAlias(new targets.CloudFrontTarget(myDist)),
-    });
-
+    try {
+      new route53.ARecord(this, 'AliasRecordForCloudFront',{
+        zone: myZone,
+        recordName: subDomain,
+        target: route53.RecordTarget.fromAlias(new targets.CloudFrontTarget(myDist)),
+      });
+    }
+    catch(e) {
+      console.warn(e)
+    }
+    
     // Deploy site to S3 bucket
     new s3Deployment.BucketDeployment(this, "DeployStaticWebsite", {
       sources: [s3Deployment.Source.asset("../dist")],
