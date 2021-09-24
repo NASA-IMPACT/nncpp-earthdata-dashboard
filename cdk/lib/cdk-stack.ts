@@ -26,11 +26,9 @@ export class CdkStack extends cdk.Stack {
     });
     const subDomain =`earthdata-dashboard.${hostedZoneName}`;
     
-    // Request certificate
-    const myCertificate = new acm.DnsValidatedCertificate(this, 'MySubdomainCert', {
-      domainName: subDomain,
-      hostedZone: myZone
-    });
+    // Get certificate
+    const myCertificateArn = `${process.env.AWS_CERTIFICATE_ARN}`;
+    const myCertificate = acm.Certificate.fromCertificateArn(this, 'Certificate', myCertificateArn);
 
     // Cloudfront
     const myDist = new cloudfront.CloudFrontWebDistribution(this, "MyCloudfrontDist", {
