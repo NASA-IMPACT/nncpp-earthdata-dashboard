@@ -20,10 +20,14 @@ export class CdkStack extends cdk.Stack {
       sources: [s3Deployment.Source.asset("../dist")],
       destinationBucket: myBucket
     });  
-    
+
     const hostedZoneId = `${process.env.AWS_HOSTED_ZONE_ID}`;
-    const myZone = route53.HostedZone.fromHostedZoneId(this, 'MyZone', hostedZoneId);
-    const subDomain =`earthdata-dashboard.${process.env.AWS_HOSTED_ZONE_NAME}`;
+    const hostedZoneName = `${process.env.AWS_HOSTED_ZONE_NAME}`;
+    const myZone = route53.HostedZone.fromHostedZoneAttributes(this, 'MyZone', {
+      zoneName: hostedZoneName,
+      hostedZoneId: hostedZoneId
+    });
+    const subDomain =`earthdata-dashboard.${hostedZoneName}`;
     const certArn = `${process.env.AWS_CERTIFICATE_ARN}`
       
     const myDist = new cloudfront.CloudFrontWebDistribution(this, "MyDist", {
