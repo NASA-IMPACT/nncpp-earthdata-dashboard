@@ -22,13 +22,16 @@ export class CdkStack extends cdk.Stack {
     const hostedZoneName = `${process.env.AWS_HOSTED_ZONE_NAME}`;
     const myZone = route53.HostedZone.fromHostedZoneAttributes(this, 'MyZone', {
       zoneName: hostedZoneName,
-      hostedZoneId: hostedZoneId
+      hostedZoneId: hostedZoneId,
     });
     const subDomain =`earthdata-dashboard.${hostedZoneName}`;
     
-    // Get certificate
-    const myCertificateArn = `${process.env.AWS_CERTIFICATE_ARN}`;
-    const myCertificate = acm.Certificate.fromCertificateArn(this, 'Certificate', myCertificateArn);
+    // Request certificate
+    const myCertificate = new acm.DnsValidatedCertificate(this, 'MyCrossRegionCert', {
+      domainName: `*.${hostedZoneName}`,
+      hostedZone: myZone,
+      region: 'us-east-1',
+    });
 
     // Cloudfront
     const myDist = new cloudfront.CloudFrontWebDistribution(this, "MyCloudfrontDist", {
@@ -53,7 +56,7 @@ export class CdkStack extends cdk.Stack {
     new s3Deployment.BucketDeployment(this, "DeployStaticWebsite", {
       sources: [s3Deployment.Source.asset("../dist")],
       destinationBucket: myBucket,
-      distribution: myDist
+      distribution: myDist,
     });  
 
   }
