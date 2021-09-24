@@ -16,11 +16,7 @@ export class CdkStack extends cdk.Stack {
       websiteIndexDocument: "index.html"
     });
 
-    const deployment = new s3Deployment.BucketDeployment(this, "deployStaticWebsite", {
-      sources: [s3Deployment.Source.asset("../dist")],
-      destinationBucket: myBucket
-    });  
-
+    // DNS domain and subdomain to add
     const hostedZoneId = `${process.env.AWS_HOSTED_ZONE_ID}`;
     const hostedZoneName = `${process.env.AWS_HOSTED_ZONE_NAME}`;
     const myZone = route53.HostedZone.fromHostedZoneAttributes(this, 'MyZone', {
@@ -28,24 +24,29 @@ export class CdkStack extends cdk.Stack {
       hostedZoneId: hostedZoneId
     });
     const subDomain =`earthdata-dashboard.${hostedZoneName}`;
-    const certArn = `${process.env.AWS_CERTIFICATE_ARN}`
-      
+    
+    // Cloudfront
     const myDist = new cloudfront.CloudFrontWebDistribution(this, "MyDist", {
       originConfigs: [{
           s3OriginSource: { s3BucketSource: myBucket},
           behaviors: [{ isDefaultBehavior: true }]
-        }],
-      aliasConfiguration: {
-        acmCertRef: certArn,
-        names: [subDomain]
-      }
+        }]
     });
 
-    const aliasRecord = new route53.ARecord(this, 'AliasForCloudFront',{
+    // Alias for cloudfront distribution
+    new route53.ARecord(this, 'AliasForCloudFront',{
       zone: myZone,
       recordName: subDomain,
       target: route53.RecordTarget.fromAlias(new targets.CloudFrontTarget(myDist)),
     });
+
+    // Deploy site to S3 bucket
+    new s3Deployment.BucketDeployment(this, "deployStaticWebsite", {
+      sources: [s3Deployment.Source.asset("../dist")],
+      destinationBucket: myBucket,
+      distribution: myDist,
+      distributionPaths: ["/*"]
+    });  
 
   }
 }
