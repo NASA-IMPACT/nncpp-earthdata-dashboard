@@ -46,17 +46,6 @@ export class CdkStack extends cdk.Stack {
         }
     });
 
-    // Alias for cloudfront distribution
-    // try {
-    //   new route53.ARecord(this, 'AliasRecordForCloudFront',{
-    //     zone: myZone,
-    //     recordName: subDomain,
-    //     target: route53.RecordTarget.fromAlias(new targets.CloudFrontTarget(myDist)),
-    //   });
-    // }
-    // catch(e) {
-    //   console.warn(e)
-    // }
     new route53.ARecord(this, 'AliasRecordForCloudFront',{
       zone: myZone,
       recordName: subDomain,
