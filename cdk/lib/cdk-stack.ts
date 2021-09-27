@@ -18,10 +18,12 @@ export class CdkStack extends cdk.Stack {
     });
 
     // DNS domain and subdomain to add
+    const hostedZoneId = `${process.env.AWS_HOSTED_ZONE_ID}`;
     const hostedZoneName = `${process.env.AWS_HOSTED_ZONE_NAME}`;
     const deploymentStage = `${process.env.STAGE}`;
-    const myZone = route53.HostedZone.fromLookup(this, 'MyZone', {
-      domainName: hostedZoneName,
+    const myZone = route53.HostedZone.fromHostedZoneAttributes(this, 'MyZone', {
+      zoneName: hostedZoneName,
+      hostedZoneId: hostedZoneId,
     });
     const subDomain =`earthdata-dashboard-${deploymentStage}.${hostedZoneName}`;
     
