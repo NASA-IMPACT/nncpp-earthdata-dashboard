@@ -122,4 +122,4 @@ This project is licensed under **Apache 2**, see the [LICENSE](LICENSE) file for
 
 # Github actions deployment
 The github actions deployment workflow is triggered on pushes to the `main` and `staging` branches.
-In addition to [these github secretes for the the github workflow](https://github.com/NASA-IMPACT/earthdata-dashboard-starter/wiki/Create-Your-Own-Dashboard#3b-add-github-secrets-for-the-github-workflow--actions), add a github secret with the key `AWS_HOSTED_ZONE_NAME` and the value of the domain name that will be used to look up the route 53 hosted zone during deployment--_this hosted zone must be created as a prerequisite to using the github actions deployment_.
+In addition to [these github secretes for the the github workflow](https://github.com/NASA-IMPACT/earthdata-dashboard-starter/wiki/Create-Your-Own-Dashboard#3b-add-github-secrets-for-the-github-workflow--actions), add the github secrets `AWS_HOSTED_ZONE_NAME` and `AWS_HOSTED_ZONE_ID` which will be used to look up the route 53 hosted zone during deployment--_this hosted zone must be created as a prerequisite to using the github actions deployment_.
