@@ -82,6 +82,9 @@ The system will watch files and execute tasks whenever one of them changes.
 The site will automatically refresh since it is bundled with livereload.
 
 # Deployment
+> Note: The [Create Your Own Dashboard Wiki](https://github.com/NASA-IMPACT/earthdata-dashboard-starter/wiki/Create-Your-Own-Dashboard#create-your-own-dashboard) is a comprehensive guide for deploying the dashboard to an AWS account using github actions. Also see the [github actions deployment](#github-actions-deployment) section below for github configuration specific to this NNCPP dashboard project. 
+
+
 Set the AWS environment variables:
 ```
 export AWS_ACCOUNT_ID=$(aws sts get-caller-identity | jq .Account -r)
@@ -116,3 +119,7 @@ This project is licensed under **Apache 2**, see the [LICENSE](LICENSE) file for
 # Troubleshooting
 
 * Syntax error when running `cdk` commands - Check that `cdk` command is being run with nodejs and not another language version (such as python).
+
+# Github actions deployment
+The github actions deployment workflow is triggered on pushes to the `main` and `staging` branches.
+In addition to [these github secretes for the the github workflow](https://github.com/NASA-IMPACT/earthdata-dashboard-starter/wiki/Create-Your-Own-Dashboard#3b-add-github-secrets-for-the-github-workflow--actions), add the github secrets `AWS_HOSTED_ZONE_NAME` and `AWS_HOSTED_ZONE_ID` which will be used to look up the route 53 hosted zone during deployment--_this hosted zone must be created as a prerequisite to using the github actions deployment_.
