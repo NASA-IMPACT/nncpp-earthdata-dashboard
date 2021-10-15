@@ -138,13 +138,13 @@ class ExpMapSecPanel extends React.Component {
         initialState={isLargeViewport()}
         headerContent={
           <PanelHeadline>
-            <PanelTitle>MAAP</PanelTitle>
+            <PanelTitle>NNCPP</PanelTitle>
           </PanelHeadline>
         }
         bodyContent={
           <BodyScroll>
             <SummaryExpandable>
-              <p>The Multi-Mission Algorithm and Analysis Platform (MAAP) is a collaborative science platform for biomass research. The platform is a collaboration between science and engineering teams at NASA and ESA. This experimental dashboard enables exploration of the data made available in the platform.</p>
+              <p>The NASA-NOAA Collaborative Platform Pilot (NNCPP) allows users to visually explore datasets from both NOAA and NASA in an experimental dashboard. The platform is a collaboration between science and engineering teams at both agencies.</p>
             </SummaryExpandable>
             <InsightsBlock>
               {this.renderContent()}
