@@ -484,7 +484,7 @@ class Home extends React.Component {
                   <IntroWelcomeTitle>Welcome</IntroWelcomeTitle>
                   <Prose>
                     <p>
-                      Project description goes here.
+                      NASA-NOAA Collaborative Platform Pilot: Exploring Fire Weather
                     </p>
                   </Prose>
                 </IntroWelcome>
